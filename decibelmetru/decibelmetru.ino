@@ -1,4 +1,8 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 #include <MD_MAX72xx.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);    // adresa I2C: 0x27 sau 0x3F, 16 coloane, 2 randuri
 
 const uint8_t MATRIX_CS = 10;
 MD_MAX72XX mx = MD_MAX72XX(MD_MAX72XX::FC16_HW, MATRIX_CS, 4);
@@ -7,6 +11,7 @@ const uint8_t BAR_PINS[10] = {2, 3, 4, 5, 6, 7, 8, 9, A1, A2};
 
 void setup() 
 {
+
   mx.begin();
   mx.control(MD_MAX72XX::INTENSITY, 3);
   mx.clear();
@@ -16,6 +21,12 @@ void setup()
     pinMode(BAR_PINS[i], OUTPUT);
     digitalWrite(BAR_PINS[i], LOW);
   }
+
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(0, 0);
+  lcd.print("Decibelmetru");
+
 }
 
 void loop() 
